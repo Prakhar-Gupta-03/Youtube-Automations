@@ -1,8 +1,11 @@
 import json
 from pytube import YouTube
 import os
+import re
 from googleapiclient.discovery import build
 import requests
+import subprocess
+import command
 import helper as helper
 
 SERVICE_NAME = "youtube"
@@ -164,9 +167,26 @@ def download_video(url):
 def download_video_mp3(url):
     if (check_video_exists(url)):
         yt = YouTube(url)
-        print("Downloading video in mp3 format with title:", yt.title)
-        yt.streams.filter(only_audio=True).first().download()
-        print("Downloaded video in mp3 format successfully")
+        vid_title = yt.title.replace(" ", "_")
+        #remove special characters from vid_title
+        vid_title = re.sub(r'[^\w\s]', '', vid_title)
+        vid_title += ".mp4"
+        print("Downloading video in mp4 format with title:", yt.title)
+        yt.streams.filter(only_audio=True).first().download(filename=vid_title)
+        print("Downloaded video in mp4 format successfully")
+        # convert to mp3 format
+        print("Converting video to mp3 format")
+        mp4_filename = '"' + vid_title + '"'
+        mp3_filename = '"' + vid_title.replace(".mp4", ".mp3") + '"'
+        # running the command to convert the mp4 file to mp3
+        command = "ffmpeg -i " + mp4_filename + " " + mp3_filename
+        subprocess.call(command, shell=True)
+        #removing the mp4 file after successful conversion to mp3
+        vid_title = yt.title 
+        vid_title = vid_title.replace(" ", "_")
+        vid_title = re.sub(r'[^\w\s]', '', vid_title)
+        vid_title += ".mp4"
+        os.remove(vid_title)
 
 def download_playlist(url):
     if (check_playlist_exists(url)):
