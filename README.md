@@ -19,4 +19,4 @@ Command to download both the libraries
 
 # How to run the program
 
-After downloading the libraries, the user needs to run the program by using the command "python main.py" in the terminal.
+After downloading the libraries, the user needs to run the program by using the command 'python main.py' in the terminal.
