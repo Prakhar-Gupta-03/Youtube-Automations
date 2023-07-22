@@ -7,10 +7,12 @@ import requests
 import subprocess
 import command
 import helper as helper
+import config as config
 
-SERVICE_NAME = "youtube"
-API_VERSION = "v3"
-API_KEY = "AIzaSyCTw2BGfyjyCp_JlILhm9Q_vDW3hofZgeg"
+SERVICE_NAME = config.SERVICE_NAME
+API_VERSION = config.API_VERSION
+API_KEY = config.API_KEY
+
 youtube = build(SERVICE_NAME, API_VERSION, developerKey = API_KEY)
 
 #get the details of a video
